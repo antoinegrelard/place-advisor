@@ -1,88 +1,83 @@
 var express = require('express');
 var router = express.Router();
 
-var reviews = [
-				  {
-					name: 'McDo',
-					placeType: 'Fastfood',
-					stars: 4 
-				  },
-				  {
-					name: 'KFC',
-					placeType: 'Fastfood',
-					stars: 3 
-				  },
-				  {
-					name: 'Subway',
-					placeType: 'Fastfood',
-					stars: 3 
-				  }
-			  ];
+var reviewsDb = require('../database/reviews');
 
-/* GET reviews page. */
-router.get('/', function(req, res, next) {
-  res.render('reviews', { title: 'Reviews', test: reviews });
+/* API GET reviews page. */
+router.route('/api').get(function (req, res) {
+	reviewsDb.find({}, function (err, reviews) {
+		if (err) {
+			res.status(500).send({'error': err});
+		} else {
+			res.send(reviews);
+		}
+	});
 });
 
-/* API GET reviews. */
-router.get('/api', function(req, res, next) {
-  res.send(reviews);
-});
-
-/* API POST review. */
-router.post('/api', function(req, res, next) {
+/* API POST review */
+router.route('/api').post(function (req, res) {
 	if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {
 		res.status(400).send("bad attributes");
 	} else {
 		var newReview = {
-							name: req.body.name,
-							placeType: req.body.placeType,
-							stars: req.body.stars
-						 }
-		reviews.push(newReview);
-		res.status(201).send(reviews);
+			name: req.body.name,
+			placeType: req.body.placeType,
+			stars: req.body.stars
+		};
+
+		reviewsDb.create(newReview, function(err, reviews) {
+			if(err) {
+				res.status(500).send({'error': err});
+			} else {
+				res.status(201).send(reviews);
+			}
+		});
 	}
 });
 
 /* API GET one review. */
-router.get('/api/:id', function(req, res, next) {
-  var id= req.params.id;
-  if(reviews[id] != null) {
-  	res.send(reviews[id]);
-  } else {
-  	res.status(404).send("no review found");
-  }
+router.route('/api/:id').get(function (req, res) {
+	var id = req.params.id;
+	reviewsDb.findById(id, function (err, review) {
+		if (err) {
+			res.status(404).send({'error': err});
+		} else {
+			res.send(review);
+		}
+	});
 });
 
 /* API PUT review. */
-router.put('/api/:id', function(req, res, next) {
-  if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {
+router.route('/api/:id').put(function (req, res) {
+	if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {
 		res.status(400).send("bad attributes");
-  } else {
+	} else {
 	  var newReview= {
 	  					name: req.body.name,
 	  					placeType: req.body.placeType,
 	  					stars: req.body.stars
 	  				 }
 	  var id= req.params.id;
-	  if(reviews[id] != null) {
-	  	reviews[id]= newReview;
-	  	res.status(201).send(reviews);
-	  } else {
-	  	res.status(404).send("no review found to modify");
-	  }
-  }
+	  reviewsDb.findByIdAndUpdate(id, newReview, function (err, review) {
+		if (err) {
+			res.status(404).send({'error': err});
+		} else {
+			res.send(newReview);
+		}
+	});
+	}
 });
 
-/* API DELETE review. */
-router.delete('/api/:id', function(req, res, next) {
-  var id= req.params.id;
-  if(reviews[id] != null) {
-    reviews.splice(id,1);
-    res.status(204).send(reviews);
-   } else {
-   	res.status(404).send("no review found to delete");
-   }
+/* API GET one review. */
+router.route('/api/:id').delete(function (req, res) {
+	var id = req.params.id;
+	reviewsDb.findByIdAndRemove(id, function (err, review) {
+		if (err) {
+			res.status(500).send({'error': err});
+		} else {
+			res.send("review deleted");
+		}
+	});
 });
 
 module.exports = router;
