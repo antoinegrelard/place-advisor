@@ -40,19 +40,18 @@ router.post('/api', function(req, res, next) {
 							stars: req.body.stars
 						 }
 		reviews.push(newReview);
-		res.send(reviews);
+		res.status(201).send(reviews);
 	}
-});
-
-/* API DELETE review. */
-router.delete('/api', function(req, res, next) {
-  res.send(req.body);
 });
 
 /* API GET one review. */
 router.get('/api/:id', function(req, res, next) {
   var id= req.params.id;
-  res.send(reviews[id]);
+  if(reviews[id] != null) {
+  	res.send(reviews[id]);
+  } else {
+  	res.status(404).send("no review found");
+  }
 });
 
 /* API PUT review. */
@@ -68,9 +67,9 @@ router.put('/api/:id', function(req, res, next) {
 	  var id= req.params.id;
 	  if(reviews[id] != null) {
 	  	reviews[id]= newReview;
-	  	res.send(reviews);
+	  	res.status(201).send(reviews);
 	  } else {
-	  	res.send("no review found to modify");
+	  	res.status(404).send("no review found to modify");
 	  }
   }
 });
@@ -80,9 +79,9 @@ router.delete('/api/:id', function(req, res, next) {
   var id= req.params.id;
   if(reviews[id] != null) {
     reviews.splice(id,1);
-    res.send(reviews);
+    res.status(204).send(reviews);
    } else {
-   	res.send("no review found to delete");
+   	res.status(404).send("no review found to delete");
    }
 });
 
