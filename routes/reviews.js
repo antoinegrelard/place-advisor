@@ -31,13 +31,17 @@ router.get('/api', function(req, res, next) {
 
 /* API POST review. */
 router.post('/api', function(req, res, next) {
-  var newReview= {
-  					name: req.body.name,
-  					placeType: req.body.placeType,
-  					stars: req.body.stars
-  				 }
-  reviews.push(newReview);
-  res.send(reviews);
+	if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {
+		res.status(400).send("bad attributes");
+	} else {
+		var newReview = {
+							name: req.body.name,
+							placeType: req.body.placeType,
+							stars: req.body.stars
+						 }
+		reviews.push(newReview);
+		res.send(reviews);
+	}
 });
 
 /* API DELETE review. */
@@ -53,25 +57,33 @@ router.get('/api/:id', function(req, res, next) {
 
 /* API PUT review. */
 router.put('/api/:id', function(req, res, next) {
-  var newReview= {
-  					name: req.body.name,
-  					placeType: req.body.placeType,
-  					stars: req.body.stars
-  				 }
-  var id= req.params.id;
-  if(reviews[id] != null) {
-  	reviews[id]= newReview;
-  	res.send(reviews);
+  if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {
+		res.status(400).send("bad attributes");
   } else {
-  	res.send("no review found to modify");
+	  var newReview= {
+	  					name: req.body.name,
+	  					placeType: req.body.placeType,
+	  					stars: req.body.stars
+	  				 }
+	  var id= req.params.id;
+	  if(reviews[id] != null) {
+	  	reviews[id]= newReview;
+	  	res.send(reviews);
+	  } else {
+	  	res.send("no review found to modify");
+	  }
   }
 });
 
 /* API DELETE review. */
 router.delete('/api/:id', function(req, res, next) {
   var id= req.params.id;
-  reviews.splice(id,1);
-  res.send(reviews);
+  if(reviews[id] != null) {
+    reviews.splice(id,1);
+    res.send(reviews);
+   } else {
+   	res.send("no review found to delete");
+   }
 });
 
 module.exports = router;
