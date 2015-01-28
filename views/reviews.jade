@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to #{title}
+
+	ul
+		each val, index in test
+			li
+				ul
+					li= val.name
+					li= val.placeType
+					li= val.stars
