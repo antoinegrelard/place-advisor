@@ -40,7 +40,7 @@ router.route('/').post(function (req, res) {
 			if(err) {
 				res.status(500).send({'error': err});
 			} else {
-				res.status(201).send(reviews);
+				res.status(201).send(newReview);
 			}
 		});
 	}
