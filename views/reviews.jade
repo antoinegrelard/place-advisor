@@ -1,13 +1,19 @@
 extends layout
 
+block scripts
+	script(src='/javascripts/scripts.js')
+
 block content
-	h1= title
-	p Welcome to #{title}
+	p All reviews
 
 	ul
-		each val, index in test
+		each review, index in reviews
 			li
 				ul
-					li= val.name
-					li= val.placeType
-					li= val.stars
+					li
+						a(href="/review/#{review.id}") view
+					li= review.name
+					li= review.placeType
+					li= review.stars
+					li
+						button(type="button", onclick="Remove(#{review.id})" ) delete

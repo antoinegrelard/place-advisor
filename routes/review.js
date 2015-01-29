@@ -10,7 +10,13 @@ router.route('/:id').get(function (req, res) {
 		if (err) {
 			res.status(404).send({'error': err});
 		} else {
-			res.send(review);
+			if(req.accepts('text/html') ) {
+				res.set('Content-Type', 'text/html');
+				res.render('review', {review: review});
+			} else {
+				res.set('Content-Type', 'application/json');
+				res.send(review);
+			}
 		}
 	});
 });

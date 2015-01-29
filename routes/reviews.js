@@ -9,7 +9,13 @@ router.route('/').get(function (req, res) {
 		if (err) {
 			res.status(500).send({'error': err});
 		} else {
-			res.send(reviews);
+			if(req.accepts('text/html') ) {
+				res.set('Content-Type', 'text/html');
+				res.render('reviews', {reviews: reviews});
+			} else {
+				res.set('Content-Type', 'application/json');
+				res.send(reviews);
+			}
 		}
 	});
 });
