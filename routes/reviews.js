@@ -14,7 +14,7 @@ router.route('/').get(function (req, res) {
 				res.render('reviews', {reviews: reviews});
 			} else {
 				res.set('Content-Type', 'application/json');
-				res.send(reviews);
+				res.status(200).send(reviews);
 			}
 		}
 	});
@@ -27,6 +27,31 @@ router.route('/').delete(function (req, res) {
 			res.status(500).send({'error': err});
 		} else {
 			res.status(204);
+		}
+	});
+});
+
+/* API POST review from web */
+router.route('/add').get(function (req, res) {
+	if(req.accepts('text./html')) {
+		res.set('Content-Type', 'text/html');
+		res.render('add');
+	}
+});
+
+/* API GET top reviews from web */
+router.route('/top').get(function (req, res) {
+	reviewsDb.find().limit(3).sort({stars: -1}).find(function (err, reviews) {
+		if (err) {
+			res.status(500).send({'error': err});
+		} else {
+			if(req.accepts('text/html') ) {
+				res.set('Content-Type', 'text/html');
+				res.render('top', {reviews: reviews});
+			} else {
+				res.set('Content-Type', 'application/json');
+				res.status(200).send(reviews);
+			}
 		}
 	});
 });

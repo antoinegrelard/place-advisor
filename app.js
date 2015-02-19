@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var reviews = require('./routes/reviews');
 var review = require('./routes/review');
-var users = require('./routes/users');
+var search = require('./routes/search');
 
 var database = require('./database/index');
 
@@ -31,7 +31,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/reviews', reviews);
 app.use('/review', review);
-app.use('/users', users);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

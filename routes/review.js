@@ -21,6 +21,21 @@ router.route('/:id').get(function (req, res) {
 	});
 });
 
+// edit one - HTML template
+router.route('/edit/:id').get(function (req, res) {
+	var id = req.params.id;
+	reviewsDb.findById(id, function (err, review) {
+		if(err) {
+			res.status(404).send({'error': err});
+		} else {
+			if(req.accepts('text/html') ) {
+				res.set('Content-Type', 'text/html');
+				res.render('edit', {review: review});
+			}
+		}
+	});
+});
+
 /* API PUT review. */
 router.route('/:id').put(function (req, res) {
 	if(req.body.name === undefined || req.body.placeType === undefined || req.body.stars === undefined) {

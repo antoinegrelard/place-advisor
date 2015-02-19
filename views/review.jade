@@ -5,6 +5,9 @@ block content
 	ul
 		li= review.name
 		li= review.placeType
-		li= review.stars
+		li 
+			- for (var i = 0; i < review.stars; ++i)
+				img(src="/images/star.png", alt="star icon" class="star")
 
+	a(href="/review/edit/#{review.id}") edit				
 	a(href="/reviews") all reviews

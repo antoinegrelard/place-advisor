@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	p All reviews
+	p Top places
 
 	ul
 		each review, index in reviews
@@ -14,8 +14,5 @@ block content
 					li 
 						- for (var i = 0; i < review.stars; ++i)
 							img(src="/images/star.png", alt="star icon" class="star")
-					li
-						button(type="button", onclick="Remove('#{review.id}')" ) delete
-	a(href="/reviews/add") add a review
-	a(href="/reviews/top") top places
-	a(href="/search") search
+
+	a(href="/reviews") all reviews
