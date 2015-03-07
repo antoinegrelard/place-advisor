@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	p Top places
+
+	ul
+		each review, index in reviews
+			li
+				ul
+					li
+						a(href="/review/#{review.id}") view
+					li= review.name
+					li= review.placeType
+					li 
+						- for (var i = 0; i < review.stars; ++i)
+							img(src="/images/star.png", alt="star icon" class="star")
+
+	a(href="/reviews") all reviews

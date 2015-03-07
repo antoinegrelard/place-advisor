@@ -1,0 +1,34 @@
+extends layout
+
+block content
+	b search
+
+	p(class="search-field")
+		input(type="radio", name="searchType", id="name" value="name", checked="checked")
+		label(for="name") Name
+	p(class="search-field")
+		input(type="radio", name="searchType", id="place" value="placeType")
+		label(for="place") Place type
+	p(class="search-field")
+		input(type="radio", name="searchType", id="stars" value="stars")
+		label(for="stars") Stars
+
+	input(type="text", id="search" placeholder="search")
+	input(type="submit", onclick="Search()", value="search")
+
+	if reviews
+		b Results
+
+		ul
+			each review, index in reviews
+				li
+					ul
+						li
+							a(href="/review/#{review.id}") view
+						li= review.name
+						li= review.placeType
+						li 
+							- for (var i = 0; i < review.stars; ++i)
+								img(src="/images/star.png", alt="star icon" class="star")
+
+	a(href="/reviews") close

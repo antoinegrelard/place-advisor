@@ -5,4 +5,19 @@ body {
 
 a {
   color: #00B7FF;
+  display: block;
+  width: 100px;
+}
+
+li {
+	list-style: none;
+}
+
+li li {
+	display: inline-block;
+	margin: 0 10px;
+}
+
+.star {
+	height: 10px; 
 }

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+	label Name
+	input(placeholder="Name", id="inputName")
+	
+	label Place type
+	input(placeholder="Type of place",id="inputPlaceType")
+	
+	label Stars
+	input(max="5", placeholder="Number of stars",id="inputStars", type="number")
+
+	input(type="submit", onclick="Add()" value="ok")
+	a(href="/reviews") close
